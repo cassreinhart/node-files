@@ -1,5 +1,8 @@
+import fs from "fs";
+import axios from 'axios';
+import process from "process";
+
 function cat(path) {
-    const fs = require('fs');
 
     fs.readFile(path, 'utf8', function(err, data) {
         if (err) {
@@ -10,10 +13,21 @@ function cat(path) {
     });
 }
 
-function webCat(url) {
-    const axios = require('axios');
+async function webCat(url) {
 
-    axios.readFile(url, 'utf8', function() {
-        //not sure what to do-- readFile even available for axios? or axios.get()?????
-    })
+    try {
+        let webPage = await axios.get(url)
+        console.log(webPage.data);
+    } catch (err) {
+        console.error(`Error: Cannot get ${url}: ${err}.`)
+        process.exit(1)
+    }
+}
+
+let path = process.argv[2];
+
+if (path.slice(0, 4) === 'http') {
+    webCat(path);
+} else {
+    cat(path);
 }

@@ -1,5 +1,7 @@
+import fs from 'fs';
+import process from 'process';
+
 function cat(path) {
-    const fs = require('fs');
 
     fs.readFile(path, 'utf8', function(err, data) {
         if (err) {
@@ -10,4 +12,4 @@ function cat(path) {
     });
 }
 
-//invokation code???
+cat(process.argv[2]);
